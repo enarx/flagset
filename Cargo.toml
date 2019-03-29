@@ -3,3 +3,11 @@ name = "flagset"
 version = "0.1.0"
 authors = ["Nathaniel McCallum <npmccallum@redhat.com>"]
 edition = "2018"
+
+license = "Apache-2.0"
+keywords = ["flags", "bitflags", "enum", "enumflags"]
+readme = "README.md"
+repository = "https://github.com/enarx/flagset"
+homepage = "https://github.com/enarx/flagset"
+documentation = "https://docs.rs/flagset"
+description = "Data types and a macro for generating enumeration-based bit flags"
