@@ -2,7 +2,7 @@
 ![Rust Version 1.31+](https://img.shields.io/badge/rustc-v1.31%2B-blue.svg)
 [![Crate](https://img.shields.io/crates/v/flagset.svg)](https://crates.io/crates/flagset)
 [![Docs](https://docs.rs/flagset/badge.svg)](https://docs.rs/flagset)
-![License](https://img.shields.io/crates/l/flagset.svg)
+![License](https://img.shields.io/crates/l/flagset.svg?style=popout)
 
 # Welcome to FlagSet!
 
