@@ -34,7 +34,7 @@ avoiding external usage of the integer types.
 
 Flags are defined using the `flags!` macro:
 
-```
+```rust
 use flagset::{FlagSet, flags};
 use std::os::raw::c_int;
 
@@ -66,7 +66,7 @@ the enumeration, use the `repr($size)` attribute as specified below.
 Flags often need values assigned to them. This can be done implicitly,
 where the value depends on the order of the flags:
 
-```
+```rust
 use flagset::{FlagSet, flags};
 
 flags! {
@@ -81,7 +81,7 @@ flags! {
 Alternatively, flag values can be defined explicitly, by specifying any
 `const` expression:
 
-```
+```rust
 use flagset::{FlagSet, flags};
 
 flags! {
@@ -95,7 +95,7 @@ flags! {
 
 Flags can also overlap or "imply" other flags:
 
-```
+```rust
 use flagset::{FlagSet, flags};
 
 flags! {
@@ -112,7 +112,7 @@ flags! {
 
 Attributes can be used on the enumeration itself or any of the values:
 
-```
+```rust
 use flagset::{FlagSet, flags};
 
 flags! {
@@ -133,7 +133,7 @@ memory, the raw `FlagSet<T>` type should be used. However, if you want to
 receive flags as an input to a function, you should use
 `impl Into<FlagSet<T>>`. This allows for very ergonomic APIs:
 
-```
+```rust
 use flagset::{FlagSet, flags};
 
 flags! {
