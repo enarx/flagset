@@ -46,7 +46,10 @@
 //! and the `bitflags` mode of flag generation; as well as additional API usage
 //! niceties. FlagSet has no dependencies and is extensively documented and
 //! tested. It also tries very hard to prevent you from making mistakes by
-//! avoiding external usage of the integer types.
+//! avoiding external usage of the integer types. FlagSet is also a zero-cost
+//! abstraction: all functions are inlineable and should reduce to the core
+//! integer operations. FlagSet also does not depend on stdlib, so it can be
+//! used in `no_std` libraries and applications.
 //!
 //! ## Defining Flags
 //!
