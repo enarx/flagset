@@ -8,7 +8,7 @@
 
 FlagSet is a new, ergonomic approach to handling flags that combines the
 best of existing crates like `bitflags` and `enumflags` without their
-downsides!
+downsides.
 
 ## Existing Implementations
 
