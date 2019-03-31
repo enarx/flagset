@@ -191,9 +191,10 @@
 
 #![allow(unknown_lints)]
 #![warn(clippy::all)]
+#![no_std]
 
-use std::fmt::{Debug, Result, Formatter};
-use std::ops::*;
+use core::fmt::{Debug, Result, Formatter};
+use core::ops::*;
 
 #[doc(hidden)]
 pub trait Flags
@@ -682,7 +683,7 @@ impl<F: Flags> FlagSet<F> {
     /// assert_eq!(FlagSet::<Flag>::new(0b10101), Err(())); // Unknown
     /// ```
     #[inline]
-    pub fn new(bits: F::Type) -> std::result::Result<Self, ()> {
+    pub fn new(bits: F::Type) -> core::result::Result<Self, ()> {
         if Self::new_truncated(bits).0 == bits {
             return Ok(FlagSet(bits));
         }
