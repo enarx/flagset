@@ -1077,7 +1077,7 @@ macro_rules! flags {
             const LIST: &'static [Self] = &[$($n::$k),+];
         }
 
-        impl std::convert::From<$n> for FlagSet<$n> {
+        impl core::convert::From<$n> for FlagSet<$n> {
             #[inline]
             fn from(value: $n) -> Self {
                 unsafe {
@@ -1088,7 +1088,7 @@ macro_rules! flags {
             }
         }
 
-        impl std::ops::Not for $n {
+        impl core::ops::Not for $n {
             type Output = $crate::FlagSet<$n>;
 
             #[inline]
@@ -1097,7 +1097,7 @@ macro_rules! flags {
             }
         }
 
-        impl<R: std::convert::Into<$crate::FlagSet<$n>>> std::ops::BitAnd<R> for $n {
+        impl<R: core::convert::Into<$crate::FlagSet<$n>>> core::ops::BitAnd<R> for $n {
             type Output = $crate::FlagSet<$n>;
 
             #[inline]
@@ -1106,7 +1106,7 @@ macro_rules! flags {
             }
         }
 
-        impl<R: std::convert::Into<$crate::FlagSet<$n>>> std::ops::BitOr<R> for $n {
+        impl<R: core::convert::Into<$crate::FlagSet<$n>>> core::ops::BitOr<R> for $n {
             type Output = $crate::FlagSet<$n>;
 
             #[inline]
@@ -1115,7 +1115,7 @@ macro_rules! flags {
             }
         }
 
-        impl<R: std::convert::Into<$crate::FlagSet<$n>>> std::ops::BitXor<R> for $n {
+        impl<R: core::convert::Into<$crate::FlagSet<$n>>> core::ops::BitXor<R> for $n {
             type Output = $crate::FlagSet<$n>;
 
             #[inline]
@@ -1124,7 +1124,7 @@ macro_rules! flags {
             }
         }
 
-        impl<R: std::convert::Into<$crate::FlagSet<$n>>> std::ops::Sub<R> for $n {
+        impl<R: core::convert::Into<$crate::FlagSet<$n>>> core::ops::Sub<R> for $n {
             type Output = $crate::FlagSet<$n>;
 
             #[inline]
@@ -1133,7 +1133,7 @@ macro_rules! flags {
             }
         }
 
-        impl<R: std::convert::Into<$crate::FlagSet<$n>>> std::ops::Rem<R> for $n {
+        impl<R: core::convert::Into<$crate::FlagSet<$n>>> core::ops::Rem<R> for $n {
             type Output = $crate::FlagSet<$n>;
 
             #[inline]
