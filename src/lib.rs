@@ -27,13 +27,13 @@
 //! The `bitflags` crate has long been part of the Rust ecosystem.
 //! Unfortunately, it doesn't feel like natural Rust. The `bitflags` crate
 //! uses a wierd struct format to define flags. Flags themselves are just
-//! integers constants, so there is little type-safety involved. But it doesn't
-//! have any dependencies. It also allows you to define implied flags (otherwise
-//! known as overlapping flags).
+//! integers constants, so there is little type-safety involved. But it
+//! doesn't have any dependencies. It also allows you to define implied flags
+//! (otherwise known as overlapping flags).
 //!
 //! The `enumflags` crate tried to improve on `bitflags` by using enumerations
-//! to define flags. This was a big improvement to the natural feel of the code.
-//! Unfortunately, there are some design flaws. To generate the flags,
+//! to define flags. This was a big improvement to the natural feel of the
+//! code. Unfortunately, there are some design flaws. To generate the flags,
 //! procedural macros were used. This implied two separate crates plus
 //! additional dependencies. Further, `enumflags` specifies the size of the
 //! flags using a `repr($size)` attribute. Unfortunately, this attribute
@@ -43,9 +43,9 @@
 //! maintained.
 //!
 //! FlagSet improves on both of these by adopting the `enumflags` natural feel
-//! and the `bitflags` mode of flag generation; as well as additional API usage
-//! niceties. FlagSet has no dependencies and is extensively documented and
-//! tested. It also tries very hard to prevent you from making mistakes by
+//! and the `bitflags` mode of flag generation; as well as additional API
+//! usage niceties. FlagSet has no dependencies and is extensively documented
+//! and tested. It also tries very hard to prevent you from making mistakes by
 //! avoiding external usage of the integer types. FlagSet is also a zero-cost
 //! abstraction: all functions are inlineable and should reduce to the core
 //! integer operations. FlagSet also does not depend on stdlib, so it can be
@@ -190,36 +190,43 @@
 //! | -        | -=                  | Difference             |
 //! | %        | %=                  | Symmetric difference   |
 //! | !        |                     | Toggle all flags       |
-//!
 
 #![allow(unknown_lints)]
 #![warn(clippy::all)]
 #![no_std]
 
-use core::fmt::{Debug, Result, Formatter};
+use core::fmt::{Debug, Formatter, Result};
 use core::ops::*;
 
 #[doc(hidden)]
-pub trait Flags
-    : Copy + Clone + Debug + PartialEq + Eq
-    + BitAnd<Self, Output=FlagSet<Self>>
-    + BitOr<Self, Output=FlagSet<Self>>
-    + BitXor<Self, Output=FlagSet<Self>>
-    + Sub<Self, Output=FlagSet<Self>>
-    + Rem<Self, Output=FlagSet<Self>>
-    + Not<Output=FlagSet<Self>>
+pub trait Flags:
+    Copy
+    + Clone
+    + Debug
+    + PartialEq
+    + Eq
+    + BitAnd<Self, Output = FlagSet<Self>>
+    + BitOr<Self, Output = FlagSet<Self>>
+    + BitXor<Self, Output = FlagSet<Self>>
+    + Sub<Self, Output = FlagSet<Self>>
+    + Rem<Self, Output = FlagSet<Self>>
+    + Not<Output = FlagSet<Self>>
     + Into<FlagSet<Self>>
-    + 'static {
-    type Type
-        : Copy + Clone + Debug + PartialEq + Eq + Default
-        + BitAnd<Self::Type, Output=Self::Type>
+    + 'static
+{
+    type Type: Copy
+        + Clone
+        + Debug
+        + PartialEq
+        + Eq
+        + Default
+        + BitAnd<Self::Type, Output = Self::Type>
         + BitAndAssign<Self::Type>
-        + BitOr<Self::Type, Output=Self::Type>
+        + BitOr<Self::Type, Output = Self::Type>
         + BitOrAssign<Self::Type>
-        + BitXor<Self::Type, Output=Self::Type>
+        + BitXor<Self::Type, Output = Self::Type>
         + BitXorAssign<Self::Type>
-        + Not<Output=Self::Type>
-        ;
+        + Not<Output = Self::Type>;
 
     /// A slice containing all the possible flag values.
     const LIST: &'static [Self];
@@ -241,7 +248,7 @@ impl<F: Flags> Iterator for Iter<F> {
             self.1 += 1;
 
             if self.0.contains(next) {
-                return Some(next)
+                return Some(next);
             }
         }
 
@@ -358,8 +365,8 @@ impl<F: Flags> Not for FlagSet<F> {
 
     /// Calculates the complement of the current set.
     ///
-    /// In common parlance, this returns the set of all possible flags that are
-    /// not in the current set.
+    /// In common parlance, this returns the set of all possible flags that
+    /// are not in the current set.
     ///
     /// ```
     /// use flagset::{FlagSet, flags};
@@ -389,7 +396,8 @@ impl<F: Flags> Not for FlagSet<F> {
 impl<F: Flags, R: Into<FlagSet<F>>> BitAnd<R> for FlagSet<F> {
     type Output = Self;
 
-    /// Calculates the intersection of the current set and the specified flags.
+    /// Calculates the intersection of the current set and the specified
+    /// flags.
     ///
     /// ```
     /// use flagset::{FlagSet, flags};
@@ -561,7 +569,8 @@ impl<F: Flags, R: Into<FlagSet<F>>> BitXorAssign<R> for FlagSet<F> {
 impl<F: Flags, R: Into<FlagSet<F>>> Sub<R> for FlagSet<F> {
     type Output = Self;
 
-    /// Calculates set difference (the current set without the specified flags).
+    /// Calculates set difference (the current set without the specified
+    /// flags).
     ///
     /// ```
     /// use flagset::{FlagSet, flags};
@@ -667,7 +676,8 @@ impl<F: Flags, R: Into<FlagSet<F>>> RemAssign<R> for FlagSet<F> {
 }
 
 impl<F: Flags> FlagSet<F> {
-    /// Creates a new set from bits; returning `Err(())` on invalid/unknown bits.
+    /// Creates a new set from bits; returning `Err(())` on invalid/unknown
+    /// bits.
     ///
     /// ```
     /// use flagset::{FlagSet, flags};
@@ -769,7 +779,9 @@ impl<F: Flags> FlagSet<F> {
     #[inline]
     pub fn full() -> Self {
         let mut set = Self::default();
-        for f in F::LIST { set |= *f }
+        for f in F::LIST {
+            set |= *f
+        }
         set
     }
 
