@@ -8,3 +8,9 @@ matrix:
   allow_failures:
     - rust: nightly
   fast_finish: true
+script:
+  - cargo build --verbose
+  - cargo test --verbose
+  - rustup install nightly
+  - rustup component add rustfmt --toolchain nightly
+  - cargo +nightly fmt --all -- --check
