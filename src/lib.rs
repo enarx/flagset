@@ -196,30 +196,38 @@
 #![warn(clippy::all)]
 #![no_std]
 
-use core::fmt::{Debug, Result, Formatter};
+use core::fmt::{Debug, Formatter, Result};
 use core::ops::*;
 
 #[doc(hidden)]
-pub trait Flags
-    : Copy + Clone + Debug + PartialEq + Eq
-    + BitAnd<Self, Output=FlagSet<Self>>
-    + BitOr<Self, Output=FlagSet<Self>>
-    + BitXor<Self, Output=FlagSet<Self>>
-    + Sub<Self, Output=FlagSet<Self>>
-    + Rem<Self, Output=FlagSet<Self>>
-    + Not<Output=FlagSet<Self>>
+pub trait Flags:
+    Copy
+    + Clone
+    + Debug
+    + PartialEq
+    + Eq
+    + BitAnd<Self, Output = FlagSet<Self>>
+    + BitOr<Self, Output = FlagSet<Self>>
+    + BitXor<Self, Output = FlagSet<Self>>
+    + Sub<Self, Output = FlagSet<Self>>
+    + Rem<Self, Output = FlagSet<Self>>
+    + Not<Output = FlagSet<Self>>
     + Into<FlagSet<Self>>
-    + 'static {
-    type Type
-        : Copy + Clone + Debug + PartialEq + Eq + Default
-        + BitAnd<Self::Type, Output=Self::Type>
+    + 'static
+{
+    type Type: Copy
+        + Clone
+        + Debug
+        + PartialEq
+        + Eq
+        + Default
+        + BitAnd<Self::Type, Output = Self::Type>
         + BitAndAssign<Self::Type>
-        + BitOr<Self::Type, Output=Self::Type>
+        + BitOr<Self::Type, Output = Self::Type>
         + BitOrAssign<Self::Type>
-        + BitXor<Self::Type, Output=Self::Type>
+        + BitXor<Self::Type, Output = Self::Type>
         + BitXorAssign<Self::Type>
-        + Not<Output=Self::Type>
-        ;
+        + Not<Output = Self::Type>;
 
     /// A slice containing all the possible flag values.
     const LIST: &'static [Self];
@@ -241,7 +249,7 @@ impl<F: Flags> Iterator for Iter<F> {
             self.1 += 1;
 
             if self.0.contains(next) {
-                return Some(next)
+                return Some(next);
             }
         }
 
@@ -769,7 +777,9 @@ impl<F: Flags> FlagSet<F> {
     #[inline]
     pub fn full() -> Self {
         let mut set = Self::default();
-        for f in F::LIST { set |= *f }
+        for f in F::LIST {
+            set |= *f
+        }
         set
     }
 
