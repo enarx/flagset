@@ -24,5 +24,11 @@ matrix:
   fast_finish: true
 install:
   - rustup component add rustfmt
+  - TRAVIS_RUST_VERSION_SEMVER=( ${TRAVIS_RUST_VERSION//./ } ); if [[ ${TRAVIS_RUST_VERSION_SEMVER[1]} -ge 36 ]]; then
+      cargo install --force cargo-audit;
+    fi
 script:
   - cargo fmt -- --check
+  - if type -f cargo-audit; then
+      cargo-audit;
+    fi
