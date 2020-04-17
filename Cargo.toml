@@ -11,3 +11,17 @@ repository = "https://github.com/enarx/flagset"
 homepage = "https://github.com/enarx/flagset"
 documentation = "https://docs.rs/flagset"
 description = "Data types and a macro for generating enumeration-based bit flags"
+
+[dependencies.serde]
+version = "1.0"
+optional = true
+features = [ "serde_derive" ]
+
+[dev-dependencies.serde_json]
+version = "1.0"
+
+[dev-dependencies.serde_repr]
+version = "0.1"
+
+[package.metadata.docs.rs]
+all-features = true
