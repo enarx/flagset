@@ -191,6 +191,58 @@
 //! | %        | %=                  | Symmetric difference   |
 //! | !        |                     | Toggle all flags       |
 //!
+#![cfg_attr(
+    feature = "serde",
+    doc = r#"
+
+## Optional Serde support
+
+[Serde] support can be enabled with the 'serde' feature flag. You can then serialize and
+deserialize `FlagSet<T>` to and from any of the [supported formats]:
+
+ ```
+ use flagset::{FlagSet, flags};
+
+ flags! {
+     enum Flags: u8 {
+         Foo,
+         Bar,
+     }
+ }
+
+ let flagset = Flags::Foo | Flags::Bar;
+ let json = serde_json::to_string(&flagset).unwrap();
+ let flagset: FlagSet<Flags> = serde_json::from_str(&json).unwrap();
+ assert_eq!(flagset.bits(), 0b011);
+ ```
+
+For serialization and deserialization of flags enum itself, you can use the [`serde_repr`] crate
+(or implement `serde::ser::Serialize` and `serde:de::Deserialize` manually), combined with the
+appropriate `repr` attribute:
+
+ ```
+ use flagset::{FlagSet, flags};
+ use serde_repr::{Serialize_repr, Deserialize_repr};
+
+ flags! {
+    #[repr(u8)]
+    #[derive(Deserialize_repr, Serialize_repr)]
+    enum Flags: u8 {
+         Foo,
+         Bar,
+    }
+ }
+
+ let json = serde_json::to_string(&Flags::Foo).unwrap();
+ let flag: Flags = serde_json::from_str(&json).unwrap();
+ assert_eq!(flag, Flags::Foo);
+ ```
+
+[Serde]: https://serde.rs/
+[supported formats]: https://serde.rs/#data-formats
+[`serde_repr`]: https://crates.io/crates/serde_repr
+"#
+)]
 
 #![allow(unknown_lints)]
 #![warn(clippy::all)]
@@ -974,6 +1026,32 @@ impl<F: Flags> FlagSet<F> {
                 *self -= f
             }
         }
+    }
+}
+
+#[cfg(feature = "serde")]
+impl<F: Flags> serde::Serialize for FlagSet<F>
+where
+    F::Type: serde::ser::Serialize,
+{
+    fn serialize<S>(&self, serializer: S) -> core::result::Result<S::Ok, S::Error>
+    where S: serde::ser::Serializer
+    {
+        self.0.serialize(serializer)
+    }
+}
+
+#[cfg(feature = "serde")]
+impl<'de, F: Flags> serde::Deserialize<'de> for FlagSet<F>
+where
+    F::Type: serde::de::Deserialize<'de>,
+{
+    fn deserialize<D>(deserializer: D) -> core::result::Result<Self, D::Error>
+    where
+        D: serde::de::Deserializer<'de>,
+
+    {
+        Ok(FlagSet(F::Type::deserialize(deserializer)?))
     }
 }
 
