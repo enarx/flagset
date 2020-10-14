@@ -243,7 +243,6 @@ appropriate `repr` attribute:
 [`serde_repr`]: https://crates.io/crates/serde_repr
 "#
 )]
-
 #![allow(unknown_lints)]
 #![warn(clippy::all)]
 #![no_std]
@@ -1035,7 +1034,8 @@ where
     F::Type: serde::ser::Serialize,
 {
     fn serialize<S>(&self, serializer: S) -> core::result::Result<S::Ok, S::Error>
-    where S: serde::ser::Serializer
+    where
+        S: serde::ser::Serializer,
     {
         self.0.serialize(serializer)
     }
@@ -1049,7 +1049,6 @@ where
     fn deserialize<D>(deserializer: D) -> core::result::Result<Self, D::Error>
     where
         D: serde::de::Deserializer<'de>,
-
     {
         Ok(FlagSet(F::Type::deserialize(deserializer)?))
     }
