@@ -250,6 +250,31 @@ appropriate `repr` attribute:
 use core::fmt::{Debug, Formatter, Result};
 use core::ops::*;
 
+/// Error type returned when creating a new flagset from bits is invalid or undefined.
+/// ```
+/// use flagset::{FlagSet, flags};
+///
+/// flags! {
+///     pub enum Flag: u16 {
+///         Foo = 0b0001,
+///         Bar = 0b0010,
+///         Baz = 0b0100,
+///         Qux = 0b1010, // Implies Bar
+///     }
+/// }
+///
+/// assert_eq!(FlagSet::<Flag>::new(0b01101), Err(flagset::InvalidBits)); // Invalid
+/// assert_eq!(FlagSet::<Flag>::new(0b10101), Err(flagset::InvalidBits)); // Unknown
+/// ```
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct InvalidBits;
+
+impl core::fmt::Display for InvalidBits {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(f, "invalid bits")
+    }
+}
+
 #[doc(hidden)]
 pub trait Flags:
     Copy
@@ -726,7 +751,7 @@ impl<F: Flags, R: Into<FlagSet<F>>> RemAssign<R> for FlagSet<F> {
 }
 
 impl<F: Flags> FlagSet<F> {
-    /// Creates a new set from bits; returning `Err(())` on invalid/unknown bits.
+    /// Creates a new set from bits; returning `Err(InvalidBits)` on invalid/unknown bits.
     ///
     /// ```
     /// use flagset::{FlagSet, flags};
@@ -741,16 +766,16 @@ impl<F: Flags> FlagSet<F> {
     /// }
     ///
     /// assert_eq!(FlagSet::<Flag>::new(0b00101), Ok(Flag::Foo | Flag::Baz));
-    /// assert_eq!(FlagSet::<Flag>::new(0b01101), Err(())); // Invalid
-    /// assert_eq!(FlagSet::<Flag>::new(0b10101), Err(())); // Unknown
+    /// assert_eq!(FlagSet::<Flag>::new(0b01101), Err(flagset::InvalidBits)); // Invalid
+    /// assert_eq!(FlagSet::<Flag>::new(0b10101), Err(flagset::InvalidBits)); // Unknown
     /// ```
     #[inline]
-    pub fn new(bits: F::Type) -> core::result::Result<Self, ()> {
+    pub fn new(bits: F::Type) -> core::result::Result<Self, InvalidBits> {
         if Self::new_truncated(bits).0 == bits {
             return Ok(FlagSet(bits));
         }
 
-        Err(())
+        Err(InvalidBits)
     }
 
     /// Creates a new set from bits; truncating invalid/unknown bits.
