@@ -1113,6 +1113,8 @@ where
 /// use flagset::{FlagSet, flags};
 ///
 /// flags! {
+///     enum FlagEmpty: u32 {}
+///
 ///     enum Flag8: u8 {
 ///         Foo = 0b001,
 ///         Bar = 0b010,
@@ -1183,15 +1185,15 @@ macro_rules! flags {
     };
 
     // Entrypoint for enumerations with values.
-    ($(#[$m:meta])* $p:vis enum $n:ident: $t:ty { $($(#[$a:meta])*$k:ident = $v:expr),+ $(,)* } $($next:tt)*) => {
+    ($(#[$m:meta])* $p:vis enum $n:ident: $t:ty { $($(#[$a:meta])*$k:ident = $v:expr),* $(,)* } $($next:tt)*) => {
         $(#[$m])*
         #[derive(Copy, Clone, Debug, PartialEq, Eq)]
-        $p enum $n { $($(#[$a])* $k),+ }
+        $p enum $n { $($(#[$a])* $k),* }
 
         impl $crate::Flags for $n {
             type Type = $t;
 
-            const LIST: &'static [Self] = &[$($n::$k),+];
+            const LIST: &'static [Self] = &[$($n::$k),*];
         }
 
         impl core::convert::From<$n> for $crate::FlagSet<$n> {
@@ -1199,7 +1201,7 @@ macro_rules! flags {
             fn from(value: $n) -> Self {
                 unsafe {
                     match value {
-                        $($n::$k => Self::new_unchecked($v)),+
+                        $($n::$k => Self::new_unchecked($v)),*
                     }
                 }
             }
