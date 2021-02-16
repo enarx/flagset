@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/enarx/flagset.svg?branch=master)](https://travis-ci.org/enarx/flagset)
+[![Build Status](https://github.com/enarx/flagset/workflows/test/badge.svg)](https://github.com/enarx/flagset/actions)
 ![Rust Version 1.31+](https://img.shields.io/badge/rustc-v1.31%2B-blue.svg)
 [![Crate](https://img.shields.io/crates/v/flagset.svg)](https://crates.io/crates/flagset)
 [![Docs](https://docs.rs/flagset/badge.svg)](https://docs.rs/flagset)
