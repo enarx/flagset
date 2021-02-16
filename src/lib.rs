@@ -1179,7 +1179,7 @@ macro_rules! flags {
 
     // Entry point for enumerations without values.
     ($(#[$m:meta])* $p:vis enum $n:ident: $t:ty { $($(#[$a:meta])* $k:ident),+ $(,)* } $($next:tt)*) => {
-        flags! { $(#[$m])* $p enum $n: $t { $($k = (1 << $n::$k as $t)),+ } $($next)* }
+        $crate::flags! { $(#[$m])* $p enum $n: $t { $($k = (1 << $n::$k as $t)),+ } $($next)* }
     };
 
     // Entrypoint for enumerations with values.
@@ -1194,12 +1194,12 @@ macro_rules! flags {
             const LIST: &'static [Self] = &[$($n::$k),+];
         }
 
-        impl core::convert::From<$n> for FlagSet<$n> {
+        impl core::convert::From<$n> for $crate::FlagSet<$n> {
             #[inline]
             fn from(value: $n) -> Self {
                 unsafe {
                     match value {
-                        $($n::$k => FlagSet::new_unchecked($v)),+
+                        $($n::$k => Self::new_unchecked($v)),+
                     }
                 }
             }
@@ -1259,6 +1259,6 @@ macro_rules! flags {
             }
         }
 
-        flags! { $($next)* }
+        $crate::flags! { $($next)* }
     };
 }
