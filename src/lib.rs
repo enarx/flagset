@@ -1181,7 +1181,7 @@ macro_rules! flags {
 
     // Entry point for enumerations without values.
     ($(#[$m:meta])* $p:vis enum $n:ident: $t:ty { $($(#[$a:meta])* $k:ident),+ $(,)* } $($next:tt)*) => {
-        $crate::flags! { $(#[$m])* $p enum $n: $t { $($k = (1 << $n::$k as $t)),+ } $($next)* }
+        $crate::flags! { $(#[$m])* $p enum $n: $t { $($(#[$a])* $k = (1 << $n::$k as $t)),+ } $($next)* }
     };
 
     // Entrypoint for enumerations with values.
