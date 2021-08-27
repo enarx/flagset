@@ -270,6 +270,7 @@ use core::ops::*;
 pub struct InvalidBits;
 
 impl core::fmt::Display for InvalidBits {
+    #[inline]
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         write!(f, "invalid bits")
     }
@@ -325,6 +326,7 @@ pub struct Iter<F: Flags>(FlagSet<F>, usize);
 impl<F: Flags> Iterator for Iter<F> {
     type Item = F;
 
+    #[inline]
     fn next(&mut self) -> Option<Self::Item> {
         while self.1 < F::LIST.len() {
             let next = F::LIST[self.1];
@@ -364,12 +366,14 @@ impl<F: Flags> IntoIterator for FlagSet<F> {
     /// assert_eq!(iter.next(), Some(Flag::Bar));
     /// assert_eq!(iter.next(), None);
     /// ```
+    #[inline]
     fn into_iter(self) -> Self::IntoIter {
         Iter(self, 0)
     }
 }
 
 impl<F: Flags> Debug for FlagSet<F> {
+    #[inline]
     fn fmt(&self, f: &mut Formatter) -> Result {
         write!(f, "FlagSet(")?;
         for (i, flag) in self.into_iter().enumerate() {
@@ -411,6 +415,7 @@ impl<F: Flags> From<Option<FlagSet<F>>> for FlagSet<F> {
     /// assert_eq!(convert(Flag::Foo), 0b001);
     /// assert_eq!(convert(None), 0b000);
     /// ```
+    #[inline]
     fn from(value: Option<FlagSet<F>>) -> FlagSet<F> {
         value.unwrap_or_default()
     }
@@ -1069,6 +1074,7 @@ impl<F: Flags> serde::Serialize for FlagSet<F>
 where
     F::Type: serde::ser::Serialize,
 {
+    #[inline]
     fn serialize<S>(&self, serializer: S) -> core::result::Result<S::Ok, S::Error>
     where
         S: serde::ser::Serializer,
@@ -1082,6 +1088,7 @@ impl<'de, F: Flags> serde::Deserialize<'de> for FlagSet<F>
 where
     F::Type: serde::de::Deserialize<'de>,
 {
+    #[inline]
     fn deserialize<D>(deserializer: D) -> core::result::Result<Self, D::Error>
     where
         D: serde::de::Deserializer<'de>,
