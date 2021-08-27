@@ -307,6 +307,12 @@ pub trait Flags:
 
     /// A slice containing all the possible flag values.
     const LIST: &'static [Self];
+
+    /// Creates an empty `FlagSet` of this type
+    #[inline]
+    fn none() -> FlagSet<Self> {
+        FlagSet::default()
+    }
 }
 
 #[derive(Copy, Clone, Eq)]
