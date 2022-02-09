@@ -390,6 +390,13 @@ impl<F: Flags, R: Copy + Into<FlagSet<F>>> PartialEq<R> for FlagSet<F> {
     }
 }
 
+impl<F: Flags> AsRef<F::Type> for FlagSet<F> {
+    #[inline]
+    fn as_ref(&self) -> &F::Type {
+        &self.0
+    }
+}
+
 impl<F: Flags> From<Option<FlagSet<F>>> for FlagSet<F> {
     /// Converts from `Option<FlagSet<F>>` to `FlagSet<F>`.
     ///
