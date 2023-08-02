@@ -840,7 +840,7 @@ impl<F: Flags> FlagSet<F> {
     /// }
     ///
     /// // Unknown and invalid bits are retained. Behavior is undefined.
-    /// let set = unsafe { FlagSet::<Flag>::new_unchecked(0b11101) };
+    /// const set: FlagSet<Flag> = unsafe { FlagSet::<Flag>::new_unchecked(0b11101) };
     /// assert_eq!(set.bits(), 0b11101);
     /// ```
     ///
@@ -849,7 +849,7 @@ impl<F: Flags> FlagSet<F> {
     /// This constructor doesn't check that the bits are valid. If you pass
     /// undefined flags, undefined behavior may result.
     #[inline]
-    pub unsafe fn new_unchecked(bits: F::Type) -> Self {
+    pub const unsafe fn new_unchecked(bits: F::Type) -> Self {
         FlagSet(bits)
     }
 
