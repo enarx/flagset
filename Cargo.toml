@@ -2,8 +2,8 @@
 name = "flagset"
 version = "0.4.3"
 authors = ["Nathaniel McCallum <nathaniel@profian.com>"]
-edition = "2018"
-rust-version = "1.56"
+edition = "2021"
+rust-version = "1.65"
 
 license = "Apache-2.0"
 keywords = ["flags", "bitflags", "enum", "enumflags"]
