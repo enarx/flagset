@@ -246,6 +246,7 @@ appropriate `repr` attribute:
 #![allow(unknown_lints)]
 #![warn(clippy::all)]
 #![cfg_attr(not(feature = "std"), no_std)]
+#![cfg_attr(docsrs, feature(doc_auto_cfg))]
 
 use core::fmt::{Debug, Formatter, Result};
 use core::ops::*;
