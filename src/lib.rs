@@ -245,7 +245,7 @@ appropriate `repr` attribute:
 )]
 #![allow(unknown_lints)]
 #![warn(clippy::all)]
-#![no_std]
+#![cfg_attr(not(feature = "std"), no_std)]
 
 use core::fmt::{Debug, Formatter, Result};
 use core::ops::*;
@@ -275,6 +275,9 @@ impl core::fmt::Display for InvalidBits {
         write!(f, "invalid bits")
     }
 }
+
+#[cfg(feature = "std")]
+impl std::error::Error for InvalidBits {}
 
 #[doc(hidden)]
 pub trait Flags:
