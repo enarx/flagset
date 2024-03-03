@@ -1,5 +1,5 @@
 [![Build Status](https://github.com/enarx/flagset/workflows/test/badge.svg)](https://github.com/enarx/flagset/actions)
-![Rust Version 1.36+](https://img.shields.io/badge/rustc-v1.36%2B-blue.svg)
+![Rust Version 1.65+](https://img.shields.io/badge/rustc-v1.65%2B-blue.svg)
 [![Crate](https://img.shields.io/crates/v/flagset.svg)](https://crates.io/crates/flagset)
 [![Docs](https://docs.rs/flagset/badge.svg)](https://docs.rs/flagset)
 ![License](https://img.shields.io/crates/l/flagset.svg?style=popout)
