@@ -772,6 +772,35 @@ impl<F: Flags, R: Into<FlagSet<F>>> RemAssign<R> for FlagSet<F> {
     }
 }
 
+impl<F: Flags, R: Into<FlagSet<F>>> Extend<R> for FlagSet<F> {
+    /// Add values by iterating over some collection.
+    ///
+    /// ```
+    /// use flagset::{FlagSet, flags};
+    ///
+    /// flags! {
+    ///     pub enum Flag: u8 {
+    ///         Foo = 1,
+    ///         Bar = 2,
+    ///         Baz = 4
+    ///     }
+    /// }
+    ///
+    /// let flag_vec = vec![Flag::Bar, Flag::Baz];
+    /// let mut some_extended_flags = FlagSet::from(Flag::Foo);
+    /// some_extended_flags.extend(flag_vec);
+    /// assert_eq!(some_extended_flags, Flag::Foo | Flag::Bar | Flag::Baz);
+    /// ```
+    fn extend<T>(&mut self, iter: T)
+    where
+        T: IntoIterator<Item = R>,
+    {
+        for item in iter {
+            *self |= item;
+        }
+    }
+}
+
 impl<F: Flags> FlagSet<F> {
     /// Creates a new set from bits; returning `Err(InvalidBits)` on invalid/unknown bits.
     ///
