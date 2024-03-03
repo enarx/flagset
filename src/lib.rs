@@ -320,6 +320,7 @@ pub trait Flags:
     }
 }
 
+#[repr(C)]
 #[derive(Copy, Clone, Eq, Hash)]
 pub struct FlagSet<F: Flags>(F::Type);
 
