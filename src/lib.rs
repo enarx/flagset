@@ -1250,7 +1250,7 @@ macro_rules! flags {
             const LIST: &'static [Self] = &[$($n::$k),*];
         }
 
-        impl core::convert::From<$n> for $crate::FlagSet<$n> {
+        impl ::core::convert::From<$n> for $crate::FlagSet<$n> {
             #[inline]
             fn from(value: $n) -> Self {
                 unsafe {
@@ -1261,7 +1261,7 @@ macro_rules! flags {
             }
         }
 
-        impl core::ops::Not for $n {
+        impl ::core::ops::Not for $n {
             type Output = $crate::FlagSet<$n>;
 
             #[inline]
@@ -1270,7 +1270,7 @@ macro_rules! flags {
             }
         }
 
-        impl<R: core::convert::Into<$crate::FlagSet<$n>>> core::ops::BitAnd<R> for $n {
+        impl<R: ::core::convert::Into<$crate::FlagSet<$n>>> ::core::ops::BitAnd<R> for $n {
             type Output = $crate::FlagSet<$n>;
 
             #[inline]
@@ -1279,7 +1279,7 @@ macro_rules! flags {
             }
         }
 
-        impl<R: core::convert::Into<$crate::FlagSet<$n>>> core::ops::BitOr<R> for $n {
+        impl<R: ::core::convert::Into<$crate::FlagSet<$n>>> ::core::ops::BitOr<R> for $n {
             type Output = $crate::FlagSet<$n>;
 
             #[inline]
@@ -1288,7 +1288,7 @@ macro_rules! flags {
             }
         }
 
-        impl<R: core::convert::Into<$crate::FlagSet<$n>>> core::ops::BitXor<R> for $n {
+        impl<R: ::core::convert::Into<$crate::FlagSet<$n>>> ::core::ops::BitXor<R> for $n {
             type Output = $crate::FlagSet<$n>;
 
             #[inline]
@@ -1297,7 +1297,7 @@ macro_rules! flags {
             }
         }
 
-        impl<R: core::convert::Into<$crate::FlagSet<$n>>> core::ops::Sub<R> for $n {
+        impl<R: ::core::convert::Into<$crate::FlagSet<$n>>> ::core::ops::Sub<R> for $n {
             type Output = $crate::FlagSet<$n>;
 
             #[inline]
@@ -1306,7 +1306,7 @@ macro_rules! flags {
             }
         }
 
-        impl<R: core::convert::Into<$crate::FlagSet<$n>>> core::ops::Rem<R> for $n {
+        impl<R: ::core::convert::Into<$crate::FlagSet<$n>>> ::core::ops::Rem<R> for $n {
             type Output = $crate::FlagSet<$n>;
 
             #[inline]
