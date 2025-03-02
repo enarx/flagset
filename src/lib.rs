@@ -26,7 +26,7 @@
 //!
 //! The `bitflags` crate has long been part of the Rust ecosystem.
 //! Unfortunately, it doesn't feel like natural Rust. The `bitflags` crate
-//! uses a wierd struct format to define flags. Flags themselves are just
+//! uses a weird struct format to define flags. Flags themselves are just
 //! integers constants, so there is little type-safety involved. But it doesn't
 //! have any dependencies. It also allows you to define implied flags (otherwise
 //! known as overlapping flags).
@@ -310,13 +310,16 @@ pub trait Flags:
         + BitXorAssign<Self::Type>
         + Not<Output = Self::Type>;
 
+    /// The zero value for this type (empty flagset).
+    const ZERO: Self::Type;
+
     /// A slice containing all the possible flag values.
     const LIST: &'static [Self];
 
     /// Creates an empty `FlagSet` of this type
     #[inline]
     fn none() -> FlagSet<Self> {
-        FlagSet::default()
+        FlagSet::empty()
     }
 }
 
@@ -456,7 +459,7 @@ impl<F: Flags> Default for FlagSet<F> {
     /// ```
     #[inline]
     fn default() -> Self {
-        FlagSet(F::Type::default())
+        Self::empty()
     }
 }
 
@@ -887,6 +890,31 @@ impl<F: Flags> FlagSet<F> {
         FlagSet(bits)
     }
 
+    /// Creates a new, empty FlagSet.
+    ///
+    /// ```
+    /// use flagset::{FlagSet, flags};
+    ///
+    /// flags! {
+    ///     enum Flag: u8 {
+    ///         Foo = 0b001,
+    ///         Bar = 0b010,
+    ///         Baz = 0b100
+    ///     }
+    /// }
+    ///
+    /// let set = FlagSet::<Flag>::empty();
+    /// assert!(set.is_empty());
+    /// assert!(!set.is_full());
+    /// assert!(!set.contains(Flag::Foo));
+    /// assert!(!set.contains(Flag::Bar));
+    /// assert!(!set.contains(Flag::Baz));
+    /// ```
+    #[inline]
+    pub const fn empty() -> Self {
+        FlagSet(F::ZERO)
+    }
+
     /// Creates a new FlagSet containing all possible flags.
     ///
     /// ```
@@ -1246,6 +1274,8 @@ macro_rules! flags {
 
         impl $crate::Flags for $n {
             type Type = $t;
+
+            const ZERO: Self::Type = 0;
 
             const LIST: &'static [Self] = &[$($n::$k),*];
         }
